@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "http://localhost:3000/todo";
+const baseUrl = "http://localhost:4501/todo";
 
 const getApiConfig = () => {
   const token = localStorage.getItem("token");

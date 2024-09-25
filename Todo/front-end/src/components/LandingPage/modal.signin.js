@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -21,31 +20,34 @@ export default function SignInModal(props) {
 
   const handleSignIn = async (e) => {
     e.preventDefault();
+    console.log("Sign-in form submitted"); // Debugging log
 
     const signInData = {
-      email: email,
-      password: password,
+      email,
+      password,
     };
+
+    console.log("Sending sign-in data: ", signInData); // Debugging log
 
     try {
       const url = "http://localhost:4501/user/signin";
       const response = await axios.post(url, signInData);
-      const { token, firstName, lastName, email } = response.data.data;
+      console.log("Sign-in success:", response.data); // Debugging log
+
+      const { token, firstName, lastName, email: userEmail } = response.data.data;
       localStorage.setItem("token", token);
       localStorage.setItem("firstName", firstName);
       localStorage.setItem("lastName", lastName);
-      localStorage.setItem("email", email);
+      localStorage.setItem("email", userEmail);
+
       handleClose();
-      window.location.reload();
+      window.location.reload(); // Reload the app after sign-in
     } catch (error) {
-      if (
-        error.response &&
-        error.response.status >= 400 &&
-        error.response.status <= 500
-      ) {
+      console.error("Error occurred during sign in:", error);
+      if (error.response) {
         setError(error.response.data.message);
       } else {
-        console.error("Error occurred during sign in:", error);
+        setError("Sign-in failed. Please try again.");
       }
     }
   };
@@ -63,11 +65,7 @@ export default function SignInModal(props) {
           <Modal.Title id="modal-signin">Sign In</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Email address"
-            className="mb-3"
-          >
+          <FloatingLabel controlId="floatingInput" label="Email address" className="mb-3">
             <Form.Control
               type="email"
               placeholder="name@example.com"
@@ -75,11 +73,7 @@ export default function SignInModal(props) {
               onChange={(e) => setEmail(e.target.value)}
             />
           </FloatingLabel>
-          <FloatingLabel
-            controlId="floatingPassword"
-            label="Password"
-            className="mb-3"
-          >
+          <FloatingLabel controlId="floatingPassword" label="Password" className="mb-3">
             <Form.Control
               type="password"
               placeholder="Password"

@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -24,37 +23,39 @@ export default function SignUpModal(props) {
     setEmail("");
     setPassword("");
     setPasswordR("");
-    props.onHide();
+    props.onHide(); // Ensure modal closes
   };
 
   const handleSignUp = async (e) => {
     e.preventDefault();
+    console.log("Sign-up form submitted"); // Debugging log
+
     if (password !== passwordR) {
       setError("Passwords do not match");
       return;
     }
 
     const signUpData = {
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      password: password,
+      firstName,
+      lastName,
+      email,
+      password,
     };
 
+    console.log("Sending sign-up data: ", signUpData); // Debugging log
+
     try {
-      const url = "http://localhost:3000/user/signup";
+      const url = "http://localhost:4501/user/signup";
       const response = await axios.post(url, signUpData);
-      console.log(response.data.message);
+      console.log("Sign-up success:", response.data.message); // Debugging log
+
       handleClose();
     } catch (error) {
-      if (
-        error.response &&
-        error.response.status >= 400 &&
-        error.response.status <= 500
-      ) {
+      console.error("Error occurred during sign up:", error);
+      if (error.response) {
         setError(error.response.data.message);
       } else {
-        console.error("Error occurred during sign up:", error);
+        setError("Sign-up failed. Please try again.");
       }
     }
   };
@@ -94,11 +95,7 @@ export default function SignUpModal(props) {
               </FloatingLabel>
             </Col>
           </Row>
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Email address"
-            className="mb-3"
-          >
+          <FloatingLabel controlId="floatingInput" label="Email address" className="mb-3">
             <Form.Control
               type="email"
               placeholder="name@example.com"
@@ -106,11 +103,7 @@ export default function SignUpModal(props) {
               onChange={(e) => setEmail(e.target.value)}
             />
           </FloatingLabel>
-          <FloatingLabel
-            controlId="floatingPassword"
-            label="Password"
-            className="mb-3"
-          >
+          <FloatingLabel controlId="floatingPassword" label="Password" className="mb-3">
             <Form.Control
               type="password"
               placeholder="Password"
@@ -118,11 +111,7 @@ export default function SignUpModal(props) {
               onChange={(e) => setPassword(e.target.value)}
             />
           </FloatingLabel>
-          <FloatingLabel
-            controlId="floatingPasswordR"
-            label="Repeat Password"
-            className="mb-3"
-          >
+          <FloatingLabel controlId="floatingPasswordR" label="Repeat Password" className="mb-3">
             <Form.Control
               type="password"
               placeholder="Repeat Password"
@@ -130,10 +119,6 @@ export default function SignUpModal(props) {
               onChange={(e) => setPasswordR(e.target.value)}
             />
           </FloatingLabel>
-          <p className="font12">
-            ** The password must be at least 8 digit & contain one lowercase,
-            uppercase, number & symbol.
-          </p>
           {error && <div className="error_msg">{error}</div>}
         </Modal.Body>
         <Modal.Footer>

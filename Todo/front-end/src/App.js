@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TopNavbar from "./components/LandingPage/navbar";
 import ToDoNavbar from "./components/LandingPage/todoNavbar";
 import Footer from "./components/LandingPage/footer";
@@ -11,27 +11,25 @@ function App() {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("token"));
 
-  React.useEffect(() => {
-    // Function to check the token and set the user state
+  useEffect(() => {
     const checkToken = () => {
-      if (token) {
+      const storedToken = localStorage.getItem("token");
+      console.log("Stored token:", storedToken); // Debugging log
+      if (storedToken) {
         setUser(true);
       } else {
         setUser(false);
       }
     };
 
-    // Check the token initially on mount
     checkToken();
 
-    // Add event listener to handle changes in local storage
     const handleStorageChange = () => {
       setToken(localStorage.getItem("token"));
     };
 
     window.addEventListener("storage", handleStorageChange);
 
-    // Clean up the event listener on unmount
     return () => {
       window.removeEventListener("storage", handleStorageChange);
     };
