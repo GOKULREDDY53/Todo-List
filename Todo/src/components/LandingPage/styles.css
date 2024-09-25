@@ -1,0 +1,44 @@
+/* styles.css */
+.font15 {
+  font-size: 15px;
+}
+
+.extraBold {
+  font-weight: 800;
+}
+
+.whiteColor {
+  color: white;
+}
+
+.blueColor {
+  color: blue;
+}
+
+.font14 {
+  font-size: 14px;
+}
+
+.font12 {
+  font-size: 12px;
+}
+
+.flexCenter {
+  display: flex;
+  align-items: center;
+}
+
+.no-underline {
+  text-decoration: none;
+}
+
+.error_msg {
+  width: 370px;
+  padding: 15px;
+  margin: 5px 0;
+  font-size: 14px;
+  background-color: #f34646;
+  color: white;
+  border-radius: 5px;
+  text-align: center;
+}
